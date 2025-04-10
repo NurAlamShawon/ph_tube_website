@@ -57,7 +57,7 @@ const load_vidoes = async () => {
         <img
           src=${thumbnail}
           alt="Shoes" 
-          class="min-h-52 rounded-xl"
+          class="h-52 rounded-xl w-full"
           />
       </figure>
       <div class="card-body">
@@ -90,7 +90,7 @@ const load_vidoes = async () => {
         <img
           src=${thumbnail}
           alt="Shoes" 
-          class="min-h-52 rounded-xl"
+          class="h-52 rounded-xl w-full"
           />
       </figure>
       <div class="card-body">

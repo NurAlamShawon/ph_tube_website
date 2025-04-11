@@ -18,7 +18,7 @@ const load_button = async () => {
     let category = data.category;
     let category_id=data.category_id;
     button.innerHTML += `
-         <button onclick="load_categories(${category_id})" class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white ">${category}</button>
+         <button id="btn-${category_id}" onclick="load_categories(${category_id})" class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white ">${category}</button>
         `;
   }
 };
@@ -155,12 +155,22 @@ date=others.posted_date;
 const load_categories = async (id) => {
   const videos = document.getElementById("videos");
   videos.innerHTML="";
+
+
+
+
   const data=`https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
+  console.log(data);
  
   const videos_data = await loader(data);
 
-if(videos_data.status=== true){
   let videos_load = videos_data.category;
+
+
+
+
+if(videos_data.status=== true){
+ 
 
   for (let data of videos_load) {
     let thumbnail = data.thumbnail;
@@ -267,10 +277,9 @@ date=others.posted_date;
 
 }else{
 
-  const error = document.getElementById("error");
-  error.innerHTML ="";
-  error.innerHTML +=`
-   <div class="w-full">
+  videos.innerHTML ="";
+  videos.innerHTML +=`
+   <div class="col-span-4 pt-10">
           <div class="flex-col">
             <div>
               <img src="Icon.png" alt="" class="mx-auto" />

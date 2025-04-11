@@ -159,7 +159,7 @@ const load_categories = async (id) => {
  
   const videos_data = await loader(data);
 
-
+if(videos_data.status=== true){
   let videos_load = videos_data.category;
 
   for (let data of videos_load) {
@@ -263,6 +263,31 @@ date=others.posted_date;
     `;
     }
   }
+
+
+}else{
+
+  const error = document.getElementById("error");
+  error.innerHTML ="";
+  error.innerHTML +=`
+   <div class="w-full">
+          <div class="flex-col">
+            <div>
+              <img src="Icon.png" alt="" class="mx-auto" />
+            </div>
+            <div>
+              <h1 class="font-bold text-2xl text-center">
+                Oops!! Sorry, There is no <br />
+                content here
+              </h1>
+            </div>
+          </div>
+        </div>
+`
+
+}
+
+  
 };
 
 

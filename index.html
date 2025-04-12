@@ -12,20 +12,13 @@
     />
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 
-
-
-
-<!-- style -->
- <style>
-  .active{
-    background-color:#FF1F3D ;
-    color: white;
-
-  }
- </style>
- 
-
-
+    <!-- style -->
+    <style>
+      .active {
+        background-color: #ff1f3d;
+        color: white;
+      }
+    </style>
   </head>
   <body>
     <header class="max-w-7xl mx-auto mt-10">
@@ -86,8 +79,9 @@
         id="buttons"
       >
         <button
-          class="btn bg-[#FF1F3D] text-white font-medium text-base rounded"
+          class="btn bg-[#e5e3e3] text-black font-medium text-base rounded hover:bg-[#FF1F3D] hover:text-white"
           onclick="load_all_vidoes()"
+          id="all"
         >
           All
         </button>
@@ -99,27 +93,24 @@
         id="videos"
         class="grid grid-cols-1 xl:grid-cols-4 gap-8 justify-center ml-16 xl:ml-0"
       >
-    
-      <div class="col-span-4 pt-10">
-        <div class="flex-col">
-          <div>
-            <img src="Icon.png" alt="" class="mx-auto" />
-          </div>
-          <div>
-            <h1 class="font-bold text-2xl text-center">
-              Oops!! Sorry, There is no <br />
-              content here
-            </h1>
+        <div class="col-span-4 pt-10">
+          <div class="flex-col">
+            <div>
+              <img src="Icon.png" alt="" class="mx-auto" />
+            </div>
+            <div>
+              <h1 class="font-bold text-2xl text-center">
+                Oops!! Sorry, There is no <br />
+                content here
+              </h1>
+            </div>
           </div>
         </div>
-      </div>
-    
-    
-    
-    </section>
-
-    
-      
+      </section>
+      <!-- <button class="btn" onclick="my_modal_1.showModal()">open modal</button> -->
+      <dialog id="my_modal_1" class="modal">
+        
+      </dialog>
     </main>
 
     <footer></footer>

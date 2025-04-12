@@ -5,6 +5,18 @@ const loader = async (url) => {
   return data;
 };
 
+const remove_active_class=()=>{
+
+const active_buttons=document.getElementsByClassName("active");
+
+for (let button of active_buttons){
+button.classList.remove("active");
+
+}
+
+
+}
+
 const load_button = async () => {
   const button = document.getElementById("buttons");
 
@@ -16,7 +28,7 @@ const load_button = async () => {
 
   for (let data of button_load) {
     let category = data.category;
-    let category_id=data.category_id;
+    let category_id = data.category_id;
     button.innerHTML += `
          <button id="btn-${category_id}" onclick="load_categories(${category_id})" class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white ">${category}</button>
         `;
@@ -25,33 +37,67 @@ const load_button = async () => {
 
 load_button();
 
+const load_des=(src,song,des)=>{
 
+  const dialog_box=document.getElementById("my_modal_1");
 
+  dialog_box.innerHTML=`
+  
+  <div class="card bg-base-100 image-full w-96 shadow-sm">
+          <figure>
+            <img
+              src=${src}
+              alt="Shoes"
+            />
+          </figure>
+          <div class="card-body">
+            <h2 class="card-title">${song}</h2>
+            <p>
+              ${des}
+            </p>
+            <div class="card-actions justify-end">
+              <form method="dialog">
+                <!-- if there is a button in form, it will close the modal -->
+                <button class="btn">Close</button>
+              </form>
+            </div>
+          </div>
+        </div>
+  
+  `
 
-const convertSerialToDate=(serial) => {
-  const startDate = new Date(1900, 0, 1); // Jan 1, 1900
-  const resultDate = new Date(startDate.getTime() + (serial - 1) * 24 * 60 * 60 * 1000);
-  return resultDate.toDateString(); // or toLocaleDateString()
 }
 
 
-
-
+const convertSerialToDate = (serial) => {
+  const startDate = new Date(1900, 0, 1); // Jan 1, 1900
+  const resultDate = new Date(
+    startDate.getTime() + (serial - 1) * 24 * 60 * 60 * 1000
+  );
+  return resultDate.toDateString(); // or toLocaleDateString()
+};
 
 const load_all_vidoes = async () => {
   const videos = document.getElementById("videos");
-  videos.innerHTML="";
+  videos.innerHTML = "";
+
+  remove_active_class (); 
+  const all_button = document.getElementById("all");
+  all_button.classList.add("active");
+
   const videos_data = await loader(
     "https://openapi.programming-hero.com/api/phero-tube/videos"
   );
 
   let videos_load = videos_data.videos;
 
+
+
   for (let data of videos_load) {
     let thumbnail = data.thumbnail;
     let tittle = data.title;
 
-    let profile_name, profile_picture, verified, views,date;
+    let profile_name, profile_picture, verified, views, date;
 
     const authors = data.authors;
     for (let info of authors) {
@@ -63,10 +109,9 @@ const load_all_vidoes = async () => {
     const others = data.others;
 
     views = others.views;
-date=others.posted_date;
+    date = others.posted_date;
 
-  const posted_date=convertSerialToDate(date);
-
+    const posted_date = convertSerialToDate(date);
 
     if (verified === "" || verified === false) {
       videos.innerHTML += `
@@ -98,6 +143,8 @@ date=others.posted_date;
             
           </div>
         </div>
+
+  <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       
       </div>
     </div>
@@ -142,7 +189,7 @@ date=others.posted_date;
             
           </div>
         </div>
-      
+        <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       </div>
     </div>
     `;
@@ -150,51 +197,51 @@ date=others.posted_date;
   }
 };
 
-
-
 const load_categories = async (id) => {
   const videos = document.getElementById("videos");
-  videos.innerHTML="";
+  videos.innerHTML = "";
 
+  const data = `https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
 
-
-
-  const data=`https://openapi.programming-hero.com/api/phero-tube/category/${id}`;
-  console.log(data);
- 
   const videos_data = await loader(data);
+
+  console.log(videos_data);
+
+  remove_active_class(); 
+
+  const clicked_button = document.getElementById(`btn-${id}`);
+  clicked_button.classList.add("active");
 
   let videos_load = videos_data.category;
 
 
+  
 
+  if (videos_data.status === true) {
+    for (let data of videos_load) {
+      let thumbnail = data.thumbnail;
+      let tittle = data.title;
 
-if(videos_data.status=== true){
- 
+     
 
-  for (let data of videos_load) {
-    let thumbnail = data.thumbnail;
-    let tittle = data.title;
+      let profile_name, profile_picture, verified, views, date;
 
-    let profile_name, profile_picture, verified, views,date;
+      const authors = data.authors;
+      for (let info of authors) {
+        profile_picture = info.profile_picture;
+        profile_name = info.profile_name;
+        verified = info.verified;
+      }
 
-    const authors = data.authors;
-    for (let info of authors) {
-      profile_picture = info.profile_picture;
-      profile_name = info.profile_name;
-      verified = info.verified;
-    }
+      const others = data.others;
 
-    const others = data.others;
+      views = others.views;
+      date = others.posted_date;
 
-    views = others.views;
-date=others.posted_date;
+      const posted_date = convertSerialToDate(date);
 
-  const posted_date=convertSerialToDate(date);
-
-
-    if (verified === "" || verified === false) {
-      videos.innerHTML += `
+      if (verified === "" || verified === false) {
+        videos.innerHTML += `
     
       <div class="card bg-base-100 w-96 shadow-sm max-w-72">
       <figure class="relative">
@@ -223,13 +270,13 @@ date=others.posted_date;
             
           </div>
         </div>
-      
+        <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       </div>
     </div>
     
     `;
-    } else {
-      videos.innerHTML += `
+      } else {
+        videos.innerHTML += `
   <div class="card bg-base-100 w-96 shadow-sm max-w-72">
       <figure class="relative">
         <img
@@ -267,18 +314,15 @@ date=others.posted_date;
             
           </div>
         </div>
-      
+        <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       </div>
     </div>
     `;
+      }
     }
-  }
-
-
-}else{
-
-  videos.innerHTML ="";
-  videos.innerHTML +=`
+  } else {
+    videos.innerHTML = "";
+    videos.innerHTML += `
    <div class="col-span-4 pt-10">
           <div class="flex-col">
             <div>
@@ -292,14 +336,6 @@ date=others.posted_date;
             </div>
           </div>
         </div>
-`
-
-}
-
-  
+`;
+  }
 };
-
-
-
-
-

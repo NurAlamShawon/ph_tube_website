@@ -37,21 +37,39 @@ const load_button = async () => {
 
 load_button();
 
-const load_des=(src,song,des)=>{
+const load_des= async (video_des)=>{
+
+  console.log(video_des);
+  
 
   const dialog_box=document.getElementById("my_modal_1");
+
+let url=`https://openapi.programming-hero.com/api/phero-tube/video/${video_des}`;
+
+
+console.log(url);
+const data= await loader(url);
+console.log(data);
+
+const data_load=data.video;
+ 
+let thumbnail=data_load.thumbnail;
+let title=data_load.title;
+
+let des=data_load.description;
+
 
   dialog_box.innerHTML=`
   
   <div class="card bg-base-100 image-full w-96 shadow-sm">
           <figure>
             <img
-              src=${src}
-              alt="Shoes"
+              src=${thumbnail}
+              alt="Music"
             />
           </figure>
           <div class="card-body">
-            <h2 class="card-title">${song}</h2>
+            <h2 class="card-title">${title}</h2>
             <p>
               ${des}
             </p>
@@ -66,6 +84,8 @@ const load_des=(src,song,des)=>{
   
   `
 
+  dialog_box.showModal();
+
 }
 
 
@@ -77,7 +97,7 @@ const convertSerialToDate = (serial) => {
   return resultDate.toDateString(); // or toLocaleDateString()
 };
 
-const load_all_vidoes = async () => {
+const load_all_vidoes = async (value = "") => {
   const videos = document.getElementById("videos");
   videos.innerHTML = "";
 
@@ -86,11 +106,10 @@ const load_all_vidoes = async () => {
   all_button.classList.add("active");
 
   const videos_data = await loader(
-    "https://openapi.programming-hero.com/api/phero-tube/videos"
+    `https://openapi.programming-hero.com/api/phero-tube/videos?title=${value}`
   );
 
   let videos_load = videos_data.videos;
-
 
 
   for (let data of videos_load) {
@@ -98,6 +117,8 @@ const load_all_vidoes = async () => {
     let tittle = data.title;
 
     let profile_name, profile_picture, verified, views, date;
+
+    let video_des = data.video_id;
 
     const authors = data.authors;
     for (let info of authors) {
@@ -144,7 +165,7 @@ const load_all_vidoes = async () => {
           </div>
         </div>
 
-  <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
+  <button onclick="load_des('${video_des}')" class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       
       </div>
     </div>
@@ -189,7 +210,7 @@ const load_all_vidoes = async () => {
             
           </div>
         </div>
-        <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
+        <button onclick="load_des('${video_des}')"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       </div>
     </div>
     `;
@@ -214,15 +235,13 @@ const load_categories = async (id) => {
 
   let videos_load = videos_data.category;
 
-
-  
-
+ 
   if (videos_data.status === true) {
     for (let data of videos_load) {
       let thumbnail = data.thumbnail;
       let tittle = data.title;
 
-     
+      let video_des=data.video_id; 
 
       let profile_name, profile_picture, verified, views, date;
 
@@ -270,7 +289,7 @@ const load_categories = async (id) => {
             
           </div>
         </div>
-        <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
+        <button onclick="load_des('${video_des}')" class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       </div>
     </div>
     
@@ -314,7 +333,7 @@ const load_categories = async (id) => {
             
           </div>
         </div>
-        <button onclick="my_modal_1.showModal()"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
+        <button onclick="load_des('${video_des}')"  class="btn bg-[#e5e3e3] text-black font-medium text-base rounded  hover:bg-[#FF1F3D] hover:text-white" ">Show Description</button>
       </div>
     </div>
     `;
@@ -339,3 +358,12 @@ const load_categories = async (id) => {
 `;
   }
 };
+
+
+
+
+document.getElementById("search").addEventListener("keyup",(e)=>{
+let search=e.target.value;
+load_all_vidoes(search);
+
+});
